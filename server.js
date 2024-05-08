@@ -1,5 +1,5 @@
 const app = require('./src/app')
-const { baseWebhookURL } = require('./src/config')
+// const { baseWebhookURL } = require('./src/config')
 require('dotenv').config()
 
 // Start the server
