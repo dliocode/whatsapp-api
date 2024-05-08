@@ -1,5 +1,7 @@
 # Use the official Node.js Alpine image as the base image
-FROM node:20-alpine
+FROM node:21-alpine
+
+RUN apk --no-cache add curl
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -24,6 +26,8 @@ RUN npm ci --only=production --ignore-scripts
 
 # Copy the rest of the source code to the working directory
 COPY . .
+
+HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost:3000/ping || exit 1
 
 # Expose the port the API will run on
 EXPOSE 3000
