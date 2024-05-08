@@ -29,12 +29,12 @@ This project is a work in progress: star it, create issues, features or pull req
 
 ## Quick Start with Docker
 
-[![dockeri.co](https://dockerico.blankenship.io/image/chrishubert/whatsapp-web-api)](https://hub.docker.com/r/chrishubert/whatsapp-web-api)
+[![dockeri.co](https://dockerico.blankenship.io/image/dliocode/whatsapp-web-api)](https://hub.docker.com/r/dliocode/whatsapp-web-api)
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/chrishubert/whatsapp-api.git
+git clone https://github.com/dliocode/whatsapp-api.git
 cd whatsapp-api
 ```
 
@@ -101,7 +101,7 @@ docker-compose pull && docker-compose up
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/chrishubert/whatsapp-api.git
+git clone https://github.com/dliocode/whatsapp-api.git
 cd whatsapp-api
 ```
 
@@ -135,7 +135,7 @@ npm run test
 
 ## Documentation
 
-API documentation can be found in the [`swagger.json`](https://raw.githubusercontent.com/chrishubert/whatsapp-api/master/swagger.json) file. See this file directly into [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/chrishubert/whatsapp-api/master/swagger.json) or any other OpenAPI-compatible tool to view and interact with the API documentation.
+API documentation can be found in the [`swagger.json`](https://raw.githubusercontent.com/dliocode/whatsapp-api/master/swagger.json) file. See this file directly into [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/dliocode/whatsapp-api/master/swagger.json) or any other OpenAPI-compatible tool to view and interact with the API documentation.
 
 This documentation is straightforward if you are familiar with whatsapp-web.js library (https://docs.wwebjs.dev/)
 If you are still confused - open an issue and I'll improve it.
@@ -170,7 +170,3 @@ This project is not affiliated, associated, authorized, endorsed by, or in any w
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](./LICENSE.md) file for details.
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=chrishubert/whatsapp-api&type=Date)](https://star-history.com/#chrishubert/whatsapp-api&Date)
