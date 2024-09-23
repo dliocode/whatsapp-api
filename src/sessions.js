@@ -172,7 +172,7 @@ const initializeEvents = (client, sessionId) => {
       client.pupPage.once('close', function () {
         // emitted when the page closes
         console.log(`Browser page closed for ${sessionId}. Restoring`)
-        restartSession(sessionId)
+        // restartSession(sessionId)
       })
       client.pupPage.once('error', function () {
         // emitted when the page crashes
