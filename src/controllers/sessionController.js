@@ -46,15 +46,15 @@ const startSession = async (req, res) => {
       .then(res.json({ success: true, message: setupSessionReturn.message }))
       .catch((err) => { sendErrorResponse(res, 500, err.message) })
   } catch (error) {
-  /* #swagger.responses[500] = {
-      description: "Server Failure.",
-      content: {
-        "application/json": {
-          schema: { "$ref": "#/definitions/ErrorResponse" }
+    /* #swagger.responses[500] = {
+        description: "Server Failure.",
+        content: {
+          "application/json": {
+            schema: { "$ref": "#/definitions/ErrorResponse" }
+          }
         }
       }
-    }
-    */
+      */
     console.log('startSession ERROR', error)
     sendErrorResponse(res, 500, error.message)
   }
@@ -120,7 +120,7 @@ const sessionQrCode = async (req, res) => {
     const sessionId = req.params.sessionId
     const session = sessions.get(sessionId)
     if (!session) {
-      return res.json({ success: false, message: 'session_not_found' })
+      return res.status(400).json({ success: false, message: 'session_not_found' })
     }
     if (session.qr) {
       return res.json({ success: true, qr: session.qr })
@@ -159,7 +159,7 @@ const sessionQrCodeImage = async (req, res) => {
     const sessionId = req.params.sessionId
     const session = sessions.get(sessionId)
     if (!session) {
-      return res.json({ success: false, message: 'session_not_found' })
+      return res.status(400).json({ success: false, message: 'session_not_found' })
     }
     if (session.qr) {
       const qrImage = qr.image(session.qr)
@@ -209,7 +209,7 @@ const restartSession = async (req, res) => {
     const sessionId = req.params.sessionId
     const validation = await validateSession(sessionId)
     if (validation.message === 'session_not_found') {
-      return res.json(validation)
+      return res.status(400).json(validation)
     }
     await reloadSession(sessionId)
     /* #swagger.responses[200] = {
@@ -255,7 +255,7 @@ const terminateSession = async (req, res) => {
     const sessionId = req.params.sessionId
     const validation = await validateSession(sessionId)
     if (validation.message === 'session_not_found') {
-      return res.json(validation)
+      return res.status(400).json(validation)
     }
     await deleteSession(sessionId, validation)
     /* #swagger.responses[200] = {
@@ -349,15 +349,15 @@ const terminateAllSessions = async (req, res) => {
     */
     res.json({ success: true, message: 'Flush completed successfully' })
   } catch (error) {
-  /* #swagger.responses[500] = {
-      description: "Server Failure.",
-      content: {
-        "application/json": {
-          schema: { "$ref": "#/definitions/ErrorResponse" }
+    /* #swagger.responses[500] = {
+        description: "Server Failure.",
+        content: {
+          "application/json": {
+            schema: { "$ref": "#/definitions/ErrorResponse" }
+          }
         }
       }
-    }
-    */
+      */
     console.log('terminateAllSessions ERROR', error)
     sendErrorResponse(res, 500, error.message)
   }
