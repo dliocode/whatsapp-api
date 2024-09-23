@@ -192,19 +192,6 @@ const initializeEvents = (client, sessionId) => {
   checkIfEventisEnabled('authenticated')
     .then(_ => {
       client.on('authenticated', async () => {
-        // let wid, phone, plataform, pushname = null
-
-        // if(client.info) {
-        //   { wid, phone, plataform, pushname, getBatteryStatus } = client.info
-
-        //   let battery = {}
-        //   if(getBatteryStatus)
-        //     battery = await getBatteryStatus()
-        // }
-        console.log({a: client})
-        console.log({b: client.info})
-
-
         triggerWebhook(sessionWebhook, sessionId, 'authenticated')
       })
     })
@@ -357,6 +344,19 @@ const initializeEvents = (client, sessionId) => {
   checkIfEventisEnabled('ready')
     .then(_ => {
       client.on('ready', () => {
+        // let wid, phone, plataform, pushname = null
+
+        // if(client.info) {
+        //   { wid, phone, plataform, pushname, getBatteryStatus } = client.info
+
+        //   let battery = {}
+        //   if(getBatteryStatus)
+        //     battery = await getBatteryStatus()
+        // }
+        console.log({a: client})
+        console.log({b: client.info})
+
+
         triggerWebhook(sessionWebhook, sessionId, 'ready')
       })
     })
