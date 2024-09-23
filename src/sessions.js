@@ -123,41 +123,6 @@ const setupSession = (sessionId) => {
           '--disable-gpu', 
           '--disable-dev-shm-usage',
         ]
-
-        // args: [
-        //   '--no-sandbox',
-        //   '--disable-setuid-sandbox', 
-        //   '--disable-dev-shm-usage', 
-        //   '--single-process', 
-        //   '--no-zygote', 
-        //   '--no-first-run', 
-        //   '--no-default-browser-check', 
-        //   '--disable-extensions', 
-        //   '--disable-default-apps', 
-        //   '--disable-sync', 
-        //   '--disable-translate', 
-        //   '--disable-web-security', 
-        //   '--disable-features=site-per-process', 
-        //   '--disable-infobars', 
-        //   '--window-position=0,0', 
-        //   '--ignore-certificate-errors', 
-        //   '--ignore-certificate-errors-spki-list', 
-        //   '--disable-gpu', 
-        //   '--disable-webgl', 
-        //   '--disable-threaded-animation', 
-        //   '--disable-threaded-scrolling', 
-        //   '--disable-in-process-stack-traces', 
-        //   '--disable-histogram-customizer', 
-        //   '--disable-gl-extensions', 
-        //   '--disable-composited-antialiasing', 
-        //   '--disable-canvas-aa', 
-        //   '--disable-3d-apis', 
-        //   '--disable-accelerated-2d-canvas', 
-        //   '--disable-accelerated-jpeg-decoding', 
-        //   '--disable-accelerated-mjpeg-decode', 
-        //   '--disable-app-list-dismiss-on-blur', 
-        //   '--disable-accelerated-video-decode',
-        // ]
       },
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
       authStrategy: localAuth
@@ -202,25 +167,25 @@ const initializeEvents = (client, sessionId) => {
   // check if the session webhook is overridden
   const sessionWebhook = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
 
-  // if (recoverSessions) {
-  //   waitForNestedObject(client, 'pupPage').then(() => {
-  //     const restartSession = async (sessionId) => {
-  //       sessions.delete(sessionId)
-  //       await client.destroy().catch(e => { })
-  //       setupSession(sessionId)
-  //     }
-  //     client.pupPage.once('close', function () {
-  //       // emitted when the page closes
-  //       console.log(`Browser page closed for ${sessionId}. Restoring`)
-  //       // restartSession(sessionId)
-  //     })
-  //     client.pupPage.once('error', function () {
-  //       // emitted when the page crashes
-  //       console.log(`Error occurred on browser page for ${sessionId}. Restoring`)
-  //       restartSession(sessionId)
-  //     })
-  //   }).catch(e => { })
-  // }
+  if (recoverSessions) {
+    waitForNestedObject(client, 'pupPage').then(() => {
+      const restartSession = async (sessionId) => {
+        sessions.delete(sessionId)
+        await client.destroy().catch(e => { })
+        setupSession(sessionId)
+      }
+      client.pupPage.once('close', function () {
+        // emitted when the page closes
+        console.log(`Browser page closed for ${sessionId}.`)
+        // restartSession(sessionId)
+      })
+      client.pupPage.once('error', function () {
+        // emitted when the page crashes
+        console.log(`Error occurred on browser page for ${sessionId}. Restoring`)
+        restartSession(sessionId)
+      })
+    }).catch(e => { })
+  }
 
   checkIfEventisEnabled('auth_failure')
     .then(_ => {
