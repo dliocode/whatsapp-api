@@ -60,6 +60,20 @@ const validateSession = async (sessionId) => {
 
 // Function to handle client session restoration
 const restoreSessions = () => {
+  function RemoveFileSingleton(pathBase){
+    const filesToValid = fs.readdirSync(pathBase);
+    const filesToDelete = filesToValid.filter(file => file.startsWith('Singleton'));
+    filesToDelete.map(fileSingleton => {
+      const filePath = path.join(pathBase, fileSingleton)
+      try {
+        fs.unlinkSync(filePath);
+        console.log(`Arquivo deletado: ${filePath}`);
+      } catch (err) {
+        console.error(`Erro ao deletar o arquivo ${filePath}: `, err);
+      }            
+    })
+  }
+
   try {
     if (!fs.existsSync(sessionFolderPath)) {
       fs.mkdirSync(sessionFolderPath) // Create the session directory if it doesn't exist
@@ -72,17 +86,7 @@ const restoreSessions = () => {
         const match = file.match(/^session-(.+)$/)
         if (match) {
           // Remove files singleton
-          const filesToValid = fs.readdirSync(path.join(sessionFolderPath, file));
-          const filesToDelete = filesToValid.filter(file => file.startsWith('Singleton'));
-          filesToDelete.map(fileSingleton => {
-            const filePath = path.join(path.join(sessionFolderPath, file), fileSingleton)
-            try {
-              fs.unlinkSync(filePath);
-              console.log(`Arquivo deletado: ${filePath}`);
-            } catch (err) {
-              console.error(`Erro ao deletar o arquivo ${filePath}:`, err);
-            }            
-          })
+          RemoveFileSingleton(path.join(sessionFolderPath, file))
 
           // Load session
           const sessionId = match[1]
@@ -115,7 +119,7 @@ const setupSession = (sessionId) => {
         // headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
       },
-      userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
       authStrategy: localAuth
     }
 
