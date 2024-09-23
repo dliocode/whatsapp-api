@@ -192,13 +192,20 @@ const initializeEvents = (client, sessionId) => {
   checkIfEventisEnabled('authenticated')
     .then(_ => {
       client.on('authenticated', async () => {
-        const { wid, phone, plataform, pushname, getBatteryStatus } = client.info
+        // let wid, phone, plataform, pushname = null
 
-        let battery = {}
-        if(getBatteryStatus)
-          battery = await getBatteryStatus()
+        // if(client.info) {
+        //   { wid, phone, plataform, pushname, getBatteryStatus } = client.info
 
-        triggerWebhook(sessionWebhook, sessionId, 'authenticated', { wid, phone, plataform, pushname, battery })
+        //   let battery = {}
+        //   if(getBatteryStatus)
+        //     battery = await getBatteryStatus()
+        // }
+        console.log({a: client})
+        console.log({b: client.info})
+
+
+        triggerWebhook(sessionWebhook, sessionId, 'authenticated')
       })
     })
 
