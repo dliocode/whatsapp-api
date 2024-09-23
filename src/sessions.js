@@ -458,6 +458,8 @@ const flushSessions = async (deleteOnlyInactive) => {
         }
       }
     }
+
+    sessions.clear()
   } catch (error) {
     console.log(error)
     throw error
