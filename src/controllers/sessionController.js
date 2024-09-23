@@ -77,6 +77,8 @@ const statusSession = async (req, res) => {
   try {
     const sessionId = req.params.sessionId
     const sessionData = await validateSession(sessionId)
+    if(!sessionData.success)
+      res.status(400)
     /* #swagger.responses[200] = {
       description: "Status of the session.",
       content: {
