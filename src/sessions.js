@@ -71,6 +71,20 @@ const restoreSessions = () => {
         // Use regular expression to extract the string from the folder name
         const match = file.match(/^session-(.+)$/)
         if (match) {
+          // Remove files singleton
+          const filesToValid = fs.readdirSync(file);
+          const filesToDelete = filesToValid.filter(file => file.startsWith('Singleton'));
+          filesToDelete.map(fileSingleton => {
+            const filePath = path.join(file, fileSingleton)
+            try {
+              fs.unlinkSync(filePath);
+              console.log(`Arquivo deletado: ${filePath}`);
+            } catch (err) {
+              console.error(`Erro ao deletar o arquivo ${filePath}:`, err);
+            }            
+          })
+
+          // Load session
           const sessionId = match[1]
           console.log('existing session detected', sessionId)
           setupSession(sessionId)
