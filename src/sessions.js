@@ -86,7 +86,7 @@ const restoreSessions = () => {
         const match = file.match(/^session-(.+)$/)
         if (match) {
           // Remove files singleton
-          // RemoveFileSingleton(path.join(sessionFolderPath, file))
+          RemoveFileSingleton(path.join(sessionFolderPath, file))
 
           // Load session
           const sessionId = match[1]
