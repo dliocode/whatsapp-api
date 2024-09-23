@@ -202,25 +202,25 @@ const initializeEvents = (client, sessionId) => {
   // check if the session webhook is overridden
   const sessionWebhook = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
 
-  if (recoverSessions) {
-    waitForNestedObject(client, 'pupPage').then(() => {
-      const restartSession = async (sessionId) => {
-        sessions.delete(sessionId)
-        await client.destroy().catch(e => { })
-        setupSession(sessionId)
-      }
-      client.pupPage.once('close', function () {
-        // emitted when the page closes
-        console.log(`Browser page closed for ${sessionId}. Restoring`)
-        // restartSession(sessionId)
-      })
-      client.pupPage.once('error', function () {
-        // emitted when the page crashes
-        console.log(`Error occurred on browser page for ${sessionId}. Restoring`)
-        restartSession(sessionId)
-      })
-    }).catch(e => { })
-  }
+  // if (recoverSessions) {
+  //   waitForNestedObject(client, 'pupPage').then(() => {
+  //     const restartSession = async (sessionId) => {
+  //       sessions.delete(sessionId)
+  //       await client.destroy().catch(e => { })
+  //       setupSession(sessionId)
+  //     }
+  //     client.pupPage.once('close', function () {
+  //       // emitted when the page closes
+  //       console.log(`Browser page closed for ${sessionId}. Restoring`)
+  //       // restartSession(sessionId)
+  //     })
+  //     client.pupPage.once('error', function () {
+  //       // emitted when the page crashes
+  //       console.log(`Error occurred on browser page for ${sessionId}. Restoring`)
+  //       restartSession(sessionId)
+  //     })
+  //   }).catch(e => { })
+  // }
 
   checkIfEventisEnabled('auth_failure')
     .then(_ => {
