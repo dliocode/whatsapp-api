@@ -60,18 +60,18 @@ const validateSession = async (sessionId) => {
 
 // Function to handle client session restoration
 const restoreSessions = () => {
-  function RemoveFileSingleton(pathBase){
-    const filesToValid = fs.readdirSync(pathBase);
-    const filesToDelete = filesToValid.filter(file => file.startsWith('Singleton'));
-    filesToDelete.map(fileSingleton => {
-      const filePath = path.join(pathBase, fileSingleton)
-      try {
-        fs.unlinkSync(filePath);
-        console.log(`Arquivo deletado: ${filePath}`);
-      } catch (err) {
-        console.error(`Erro ao deletar o arquivo ${filePath}: `, err);
-      }            
-    })
+  function RemoveFileSingleton(absoluteProfilePath) {
+    try {
+      const files = fs.readdirSync(absoluteProfilePath)
+      for (const file of files) {
+        if (file.match('Singleton')) {
+          const filePath = path.join(absoluteProfilePath, file)
+          console.log(`deleting ${filePath}`)
+          fs.unlinkSync(filePath)
+        }
+      }
+    }
+    catch (e) { }
   }
 
   try {
@@ -117,7 +117,47 @@ const setupSession = (sessionId) => {
       puppeteer: {
         executablePath: process.env.CHROME_BIN || null,
         // headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
+        // args: [
+        //   '--no-sandbox', 
+        //   '--disable-setuid-sandbox', 
+        //   '--disable-gpu', 
+        //   '--disable-dev-shm-usage',
+        // ]
+
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox', 
+          '--disable-dev-shm-usage', 
+          '--single-process', 
+          '--no-zygote', 
+          '--no-first-run', 
+          '--no-default-browser-check', 
+          '--disable-extensions', 
+          '--disable-default-apps', 
+          '--disable-sync', 
+          '--disable-translate', 
+          '--disable-web-security', 
+          '--disable-features=site-per-process', 
+          '--disable-infobars', 
+          '--window-position=0,0', 
+          '--ignore-certificate-errors', 
+          '--ignore-certificate-errors-spki-list', 
+          '--disable-gpu', 
+          '--disable-webgl', 
+          '--disable-threaded-animation', 
+          '--disable-threaded-scrolling', 
+          '--disable-in-process-stack-traces', 
+          '--disable-histogram-customizer', 
+          '--disable-gl-extensions', 
+          '--disable-composited-antialiasing', 
+          '--disable-canvas-aa', 
+          '--disable-3d-apis', 
+          '--disable-accelerated-2d-canvas', 
+          '--disable-accelerated-jpeg-decoding', 
+          '--disable-accelerated-mjpeg-decode', 
+          '--disable-app-list-dismiss-on-blur', 
+          '--disable-accelerated-video-decode',
+        ]
       },
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
       authStrategy: localAuth
@@ -345,9 +385,9 @@ const initializeEvents = (client, sessionId) => {
     .then(_ => {
       client.on('ready', () => {
         const info = {
-          server: client.info.wid.server, 
-          name: client.info.pushname, 
-          phone: client.info.wid.user, 
+          server: client.info.wid.server,
+          name: client.info.pushname,
+          phone: client.info.wid.user,
           plataform: client.info.plataform
         }
 
