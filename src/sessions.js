@@ -44,6 +44,8 @@ const validateSession = async (sessionId) => {
     const state = await client.getState()
     returnData.state = state
     if (state !== 'CONNECTED') {
+      reloadSession(sessionId)
+
       returnData.message = 'session_not_connected'
       return returnData
     }
