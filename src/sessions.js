@@ -72,10 +72,10 @@ const restoreSessions = () => {
         const match = file.match(/^session-(.+)$/)
         if (match) {
           // Remove files singleton
-          const filesToValid = fs.readdirSync(file);
+          const filesToValid = fs.readdirSync(path.join(sessionFolderPath, file));
           const filesToDelete = filesToValid.filter(file => file.startsWith('Singleton'));
           filesToDelete.map(fileSingleton => {
-            const filePath = path.join(file, fileSingleton)
+            const filePath = path.join(path.join(sessionFolderPath, file), fileSingleton)
             try {
               fs.unlinkSync(filePath);
               console.log(`Arquivo deletado: ${filePath}`);
