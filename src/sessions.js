@@ -86,7 +86,7 @@ const restoreSessions = () => {
         const match = file.match(/^session-(.+)$/)
         if (match) {
           // Remove files singleton
-          RemoveFileSingleton(path.join(sessionFolderPath, file))
+          // RemoveFileSingleton(path.join(sessionFolderPath, file))
 
           // Load session
           const sessionId = match[1]
@@ -344,20 +344,14 @@ const initializeEvents = (client, sessionId) => {
   checkIfEventisEnabled('ready')
     .then(_ => {
       client.on('ready', () => {
-        // let wid, phone, plataform, pushname = null
+        const info = {
+          server: client.info.wid.server, 
+          name: client.info.pushname, 
+          phone: client.info.wid.user, 
+          plataform: client.info.plataform
+        }
 
-        // if(client.info) {
-        //   { wid, phone, plataform, pushname, getBatteryStatus } = client.info
-
-        //   let battery = {}
-        //   if(getBatteryStatus)
-        //     battery = await getBatteryStatus()
-        // }
-        console.log({a: client})
-        console.log({b: client.info})
-
-
-        triggerWebhook(sessionWebhook, sessionId, 'ready')
+        triggerWebhook(sessionWebhook, sessionId, 'ready', info)
       })
     })
 
